@@ -27,9 +27,9 @@
 #include <windows.h>
 #include <iostream>
 #include <vector>
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include <stdio.h>      
+#include <stdlib.h> 
+#include <time.h>       
 
 // This Include
 #include "level.h"
@@ -59,7 +59,6 @@ const float fBallVelY = 75.0f;
 CLevel::CLevel()
 : m_iBricksRemaining(0)
 , m_pPlayer(0)
-//, m_pBall(0)
 , m_iWidth(0)
 , m_iHeight(0)
 , m_fpsCounter(0)
@@ -283,43 +282,49 @@ void CLevel::LaserMoon(float _fDeltaTick) {
 }
 
 bool CLevel::Spawnthebadguys() {
-	const int kiNumofEnemies = 55;
-	const int kiStartX = 20;
-	const int maxWidthSpawn = 400 - 100;
-	const int maxperRow = 11;
-	int iCurrentX = kiStartX;
-	int iCurrentY = kiStartX;
-	int currentrowelement = 0;
-	enemyspeed = enemyspeed *1.5f;
-	m_vecBricks.clear();
-	m_vecLasers.clear();
-	m_vecLasersEnemy.clear();
-	Beep(300, 25);
-	Beep(500, 25);
-	Beep(700, 25);
-	Beep(1000, 25);
-	Beep(1100, 25);
-	Beep(1500, 50);
-	for (int i = 0; i < kiNumofEnemies; ++i)
-	{
-		CBrick* pBrick = new CBrick();
-		VALIDATE(pBrick->Initialise());
-
-		pBrick->SetX(static_cast<float>(iCurrentX));
-		pBrick->SetY(static_cast<float>(iCurrentY));
-
-		iCurrentX += static_cast<int>(pBrick->GetWidth()) + kiGap;
-
-		currentrowelement++;
-
-		if ((iCurrentX > maxWidthSpawn) || (currentrowelement + 1 > maxperRow))
+	try {
+		const int kiNumofEnemies = 55;
+		const int kiStartX = 20;
+		const int maxWidthSpawn = 400 - 100;
+		const int maxperRow = 11;
+		int iCurrentX = kiStartX;
+		int iCurrentY = kiStartX;
+		int currentrowelement = 0;
+		enemyspeed = enemyspeed * 1.5f;
+		m_vecBricks.clear();
+		m_vecLasers.clear();
+		m_vecLasersEnemy.clear();
+		m_pPlayer->SetHealth(3);
+		Beep(300, 25);
+		Beep(500, 25);
+		Beep(700, 25);
+		Beep(1000, 25);
+		Beep(1100, 25);
+		Beep(1500, 50);
+		for (int i = 0; i < kiNumofEnemies; ++i)
 		{
-			iCurrentX = kiStartX;
-			currentrowelement = 0;
-			iCurrentY += 20;
-		}
+			CBrick* pBrick = new CBrick();
+			VALIDATE(pBrick->Initialise());
 
-		m_vecBricks.push_back(pBrick);
+			pBrick->SetX(static_cast<float>(iCurrentX));
+			pBrick->SetY(static_cast<float>(iCurrentY));
+
+			iCurrentX += static_cast<int>(pBrick->GetWidth()) + kiGap;
+
+			currentrowelement++;
+
+			if ((iCurrentX > maxWidthSpawn) || (currentrowelement + 1 > maxperRow))
+			{
+				iCurrentX = kiStartX;
+				currentrowelement = 0;
+				iCurrentY += 20;
+			}
+
+			m_vecBricks.push_back(pBrick);
+		}
+	}
+	catch (...) {
+		OutputDebugString(L"level.cpp exception in Spawnthebadguys() caught and handled :D");
 	}
 	return true;
 }
@@ -327,44 +332,53 @@ bool CLevel::Spawnthebadguys() {
 void
 CLevel::Process(float _fDeltaTick)
 {
+	try {
+		AleinMove();
+		LaserMoon(_fDeltaTick);
 
-	AleinMove();
-	LaserMoon(_fDeltaTick);
+		m_pBackground->Process(_fDeltaTick);
+		m_pPlayer->Process(_fDeltaTick);
+		ProcessLaserCollision();
 
-	m_pBackground->Process(_fDeltaTick);
-	m_pPlayer->Process(_fDeltaTick);
-	ProcessLaserCollision();
+		ProcessCheckForWin();
+		ProcessBallBounds();
+		DrawScore();
+		CheckforDeath();
 
-    ProcessCheckForWin();
-	ProcessBallBounds();
-	DrawScore();
-	CheckforDeath();
-
-    for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
-    {
-		m_vecBricks[i]->Process(_fDeltaTick);
-    }
-	
-	if (timeractive) {
-		if (timer < 0) {
-			timeractive = false;
-		}
-	}
-	else {
-		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
 		{
-			m_plaser = new CLaser();
-			m_plaser->Initialise(m_pPlayer->GetX(), m_pPlayer->GetY(), -100);
-			m_vecLasers.push_back(m_plaser);
-			Beep(500, 25);
+			m_vecBricks[i]->Process(_fDeltaTick);
 		}
-		timer = cooldownmax;
-		timeractive = true;
-	}
-    
-	timer -= 1;
 
-	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
+		if (timeractive) {
+			if (timer < 0) {
+				timeractive = false;
+			}
+		}
+		else {
+			try {
+				if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+				{
+					m_plaser = new CLaser();
+					m_plaser->Initialise(m_pPlayer->GetX(), m_pPlayer->GetY(), -100);
+					m_vecLasers.push_back(m_plaser);
+					Beep(500, 25);
+				}
+				timer = cooldownmax;
+				timeractive = true;
+			}
+			catch (...) {
+
+			}
+		}
+
+		timer -= 1;
+
+		m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
+	}
+	catch (...) {
+		OutputDebugString(L"level.cpp exception in Process() caught and handled :D");
+	}
 }
 
 CPlayer* 
@@ -401,26 +415,31 @@ void CLevel::ProcessLaserCollision() {
 
 				}
 				else {
-					float fBallR = m_vecLasers[i]->GetRadius();
+					try {
+						float fBallR = m_vecLasers[i]->GetRadius();
 
-					float fBallX = m_vecLasers[i]->GetX();
-					float fBallY = m_vecLasers[i]->GetY();
+						float fBallX = m_vecLasers[i]->GetX();
+						float fBallY = m_vecLasers[i]->GetY();
 
-					float fBrickX = m_vecBricks[j]->GetX();
-					float fBrickY = m_vecBricks[j]->GetY();
+						float fBrickX = m_vecBricks[j]->GetX();
+						float fBrickY = m_vecBricks[j]->GetY();
 
-					float fBrickH = m_vecBricks[j]->GetHeight();
-					float fBrickW = m_vecBricks[j]->GetWidth();
+						float fBrickH = m_vecBricks[j]->GetHeight();
+						float fBrickW = m_vecBricks[j]->GetWidth();
 
-					if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
-						(fBallX - fBallR < fBrickX + fBrickW / 2) &&
-						(fBallY + fBallR > fBrickY - fBrickH / 2) &&
-						(fBallY - fBallR < fBrickY + fBrickH / 2))
-					{
-						m_vecBricks[j]->SetHit(true);
-						score += 50;
-						Beep(1000, 25);
-						m_vecLasers.erase(m_vecLasers.begin() + i);
+						if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
+							(fBallX - fBallR < fBrickX + fBrickW / 2) &&
+							(fBallY + fBallR > fBrickY - fBrickH / 2) &&
+							(fBallY - fBallR < fBrickY + fBrickH / 2))
+						{
+							m_vecBricks[j]->SetHit(true);
+							score += 50;
+							Beep(1000, 25);
+							m_vecLasers.erase(m_vecLasers.begin() + i);
+						}
+					}
+					catch (...){
+						OutputDebugString(L"level.cpp exception in ProcessLaserCollision() caught and handled :D");
 					}
 				}
 			}
@@ -477,7 +496,7 @@ CLevel::ProcessCheckForWin()
 		}
     }
 	wave += 1;
-	Spawnthebadguys();//CGame::GetInstance().GameOverWon();
+	Spawnthebadguys();
 }
 
 void

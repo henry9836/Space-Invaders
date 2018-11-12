@@ -64,31 +64,34 @@ CPlayer::Draw()
 void
 CPlayer::Process(float _fDeltaTick)
 {
-    
-	float fHalfPaddleW = static_cast<float>(m_pSprite->GetWidth() / 2.0);
+	try {
+		float fHalfPaddleW = static_cast<float>(m_pSprite->GetWidth() / 2.0);
 
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{
-		m_fX += 400.0f * _fDeltaTick;
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		{
+			m_fX += 400.0f * _fDeltaTick;
+		}
+		else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			m_fX -= 400.0f * _fDeltaTick;
+		}
+
+		else if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		{
+			//debug
+		}
+		if (m_fX - fHalfPaddleW <= 0)
+		{
+			m_fX = fHalfPaddleW;
+		}
+		else if (m_fX + fHalfPaddleW >= 385)
+		{
+			m_fX = 385 - fHalfPaddleW;
+		}
 	}
-	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{ 
-		m_fX -= 400.0f * _fDeltaTick;
+	catch (...) {
+		OutputDebugString(L"Player.cpp exception caught and handled :D");
 	}
-	
-	else if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
-	{
-		//debug
-	}
-	if (m_fX - fHalfPaddleW <= 0)
-	{
-		m_fX = fHalfPaddleW;
-	}
-	else if (m_fX + fHalfPaddleW >= 385)
-	{
-		m_fX = 385-fHalfPaddleW;
-	}
-	
 	CEntity::Process(_fDeltaTick);
 }
 

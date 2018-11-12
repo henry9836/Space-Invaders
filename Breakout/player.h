@@ -53,7 +53,7 @@ private:
 
     // Member Variables
 public:
-	int health = 5;
+	int health = 3;
 protected:
 
 private:
