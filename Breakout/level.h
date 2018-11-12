@@ -23,6 +23,7 @@
 
 // Local Includes
 #include "laser.h"
+#include "spaceship.h"
 // Types
 
 // Constants
@@ -87,6 +88,7 @@ protected:
     CPlayer* m_pPlayer;
 	CLaser* m_plaser;
 	CLaser* m_elaser;
+	CSpaceShip* m_space_Ship;
     std::vector<CBrick*> m_vecBricks;
 	std::vector<CLaser*> m_vecLasers;
 	std::vector<CLaser*> m_vecLasersEnemy;

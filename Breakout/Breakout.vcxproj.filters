@@ -54,6 +54,9 @@
     <ClCompile Include="laser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="spaceship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backbuffer.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="laser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spaceship.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -151,6 +157,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Sprites\laserm.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\spaceship.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\PlayerSpritem.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

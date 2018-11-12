@@ -107,11 +107,8 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 	m_pPlayer->SetX(_iWidth / 2.0f);
 	m_pPlayer->SetY(_iHeight - (1.5f * m_pPlayer->GetHeight()));
 
-	//m_plaser = new CLaser();
-	//VALIDATE(m_plaser->Initialise(m_pPlayer->GetX(), 100, laserspeed));
-
-    // Set the player's position to be centered on the x, 
-    // and a little bit up from the bottom of the window.
+	m_space_Ship = new CSpaceShip();
+	m_space_Ship->Initialise(2000);
 
     const int kiNumofEnemies = 55;
     const int kiStartX = 20;
@@ -177,6 +174,7 @@ CLevel::Draw()
 	}
 
     m_pPlayer->Draw();
+	m_space_Ship->Draw();
 	
     DrawScore();
 	DrawFPS();
@@ -220,7 +218,7 @@ void CLevel::AleinMove() {
 				}
 			}
 
-			if ((m_vecBricks[i]->GetY()) > 530) {
+			if ((m_vecBricks[i]->GetY()) > 530) { //when aliens go below player
 				if (m_vecBricks[i] != nullptr) {
 					if (m_vecBricks[i]->IsHit()) {
 
@@ -301,6 +299,24 @@ bool CLevel::Spawnthebadguys() {
 		Beep(1000, 25);
 		Beep(1100, 25);
 		Beep(1500, 50);
+
+		/* Spawn Spaceship If I feel like it :P*/
+		int spawnAlien = 0;
+		spawnAlien = rand() % 100 + 1;
+		if (spawnAlien > 75) {
+			int i;
+			i = rand() % 10000 + 1;
+			m_space_Ship->SpawnMe(-i);
+			Beep(1500, 150);
+			Beep(1750, 150);
+			Beep(1950, 150);
+			Beep(1500, 150);
+			Beep(1750, 150);
+			Beep(1950, 150);
+			Beep(1500, 150);
+			Beep(1750, 150);
+			Beep(1950, 150);
+		}
 		for (int i = 0; i < kiNumofEnemies; ++i)
 		{
 			CBrick* pBrick = new CBrick();
@@ -338,6 +354,7 @@ CLevel::Process(float _fDeltaTick)
 
 		m_pBackground->Process(_fDeltaTick);
 		m_pPlayer->Process(_fDeltaTick);
+		m_space_Ship->Process(_fDeltaTick);
 		ProcessLaserCollision();
 
 		ProcessCheckForWin();
@@ -363,6 +380,12 @@ CLevel::Process(float _fDeltaTick)
 					m_plaser->Initialise(m_pPlayer->GetX(), m_pPlayer->GetY(), -100);
 					m_vecLasers.push_back(m_plaser);
 					Beep(500, 25);
+				}
+				if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) //DEBUG SKIP
+				{
+					wave++;
+					Spawnthebadguys();
+					Beep(1500, 25);
 				}
 				timer = cooldownmax;
 				timeractive = true;
