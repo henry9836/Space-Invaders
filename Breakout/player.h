@@ -39,7 +39,10 @@ public:
     virtual bool Initialise();
 
     virtual void Draw();
-    virtual void Process(float _fDeltaTick);
+	virtual void Process(float _fDeltaTick); \
+
+	int GetHealth();
+	void SetHealth(int in);
 
 protected:
 	CLaser * m_pLaser;
@@ -50,7 +53,7 @@ private:
 
     // Member Variables
 public:
-
+	int health = 5;
 protected:
 
 private:

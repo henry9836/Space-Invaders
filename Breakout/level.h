@@ -56,8 +56,9 @@ public:
 
 protected:
     void ProcessBallWallCollision();
+	void CheckforDeath();
 	void ProcessLaserCollision();
-	void ProcessPlayerWallCollison();
+	//void ProcessPlayerWallCollison();
     void ProcessBallPlayerCollision();
     void ProcessBallBrickCollision();
 
@@ -68,6 +69,8 @@ protected:
     void UpdateScoreText();
     void DrawScore();
 	void DrawFPS();
+	void DisplayHeath();
+	void DisplayScore();
 
     void SetBricksRemaining(int _i);
 
@@ -95,6 +98,8 @@ protected:
     int m_iBricksRemaining;
 
     std::string m_strScore;
+	std::string m_health;
+	std::string m_score;
 
 private:
 

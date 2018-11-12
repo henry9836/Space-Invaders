@@ -91,3 +91,13 @@ CPlayer::Process(float _fDeltaTick)
 	
 	CEntity::Process(_fDeltaTick);
 }
+
+int CPlayer::GetHealth()
+{
+	return health;
+}
+
+void CPlayer::SetHealth(int in)
+{
+	health = in;
+}

@@ -53,6 +53,9 @@ public:
 	void GameOverWon();
 	void GameOverLost();
 
+	void GameOverLostToLives();
+	void GameOverLostToAleins();
+
 	// Singleton Methods
 	static CGame& GetInstance();
 	static void DestroyInstance();

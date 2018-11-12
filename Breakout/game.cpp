@@ -21,7 +21,7 @@
 #include "utils.h"
 
 // This Include
-#include "Game.h"
+#include "game.h"
 
 // Static Variables
 CGame* CGame::s_pGame = 0;
@@ -113,6 +113,10 @@ CGame::GetInstance()
 	return (*s_pGame);
 }
 
+void CGame::DestroyInstance()
+{
+}
+
 void
 CGame::GameOverWon()
 {
@@ -127,11 +131,14 @@ CGame::GameOverLost()
 	PostQuitMessage(0);
 }
 
-void
-CGame::DestroyInstance()
-{
-	delete s_pGame;
-	s_pGame = 0;
+void CGame::GameOverLostToLives(){
+	MessageBox(m_hMainWindow, L"You Lost all your lives!", L"Game Over", MB_OK);
+	PostQuitMessage(0);
+}
+
+void CGame::GameOverLostToAleins() {
+	MessageBox(m_hMainWindow, L"You Lost to the alien invasion!", L"Game Over", MB_OK);
+	PostQuitMessage(0);
 }
 
 CBackBuffer*

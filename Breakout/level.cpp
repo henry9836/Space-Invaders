@@ -15,7 +15,7 @@
 // Library Includes
 
 // Local Includes
-#include "Game.h"
+#include "game.h"
 #include "player.h"
 #include "Brick.h"
 #include "Ball.h"
@@ -170,6 +170,13 @@ CLevel::Draw()
 		}
 	}
 
+	for (unsigned int i = 0; i < m_vecLasersEnemy.size(); ++i)
+	{
+		if (m_vecLasersEnemy[i] != nullptr) {
+			m_vecLasersEnemy[i]->Draw();
+		}
+	}
+
     m_pPlayer->Draw();
 	
     DrawScore();
@@ -181,6 +188,7 @@ void CLevel::AleinMove() {
 	for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
 	{
 		int doIWantToShoot = 0;
+		doIWantToShoot = rand() % 100000 + 1;
 		if (m_vecBricks[i] != nullptr) {
 			if (goLeft) {
 				if (m_vecBricks[i]->GetX() > kiGap) {
@@ -199,6 +207,7 @@ void CLevel::AleinMove() {
 					}
 				}
 			}
+
 			else {
 				if (m_vecBricks[i]->GetX() < m_iWidth - kiGap) {
 					m_vecBricks[i]->SetX(m_vecBricks[i]->GetX() + enemyspeed);
@@ -211,22 +220,31 @@ void CLevel::AleinMove() {
 					}
 				}
 			}
+
 			if ((m_vecBricks[i]->GetY()) > 530) {
 				if (m_vecBricks[i] != nullptr) {
 					if (m_vecBricks[i]->IsHit()) {
 
 					}
 					else {
-						CGame::GetInstance().GameOverWon();
+						Beep(1500, 50);
+						Beep(1100, 25);
+						Beep(1000, 25);
+						Beep(700, 25);
+						Beep(500, 25);
+						Beep(300, 25);
+						CGame::GetInstance().GameOverLostToAleins();
 					}
 				}
 
 			}
-			doIWantToShoot = rand() % 100 + 1;
-			if (doIWantToShoot > 50) {
-				m_elaser = new CLaser();
-				//m_elaser->Initialise(10, 10, 100);
-				m_vecLasersEnemy.push_back(m_elaser);
+			if (!(m_vecBricks[i]->IsHit())) {
+				if ((doIWantToShoot < 10005) && (doIWantToShoot > 10000)) {
+					m_elaser = new CLaser();
+					m_elaser->Initialise(m_vecBricks[i]->GetX(), m_vecBricks[i]->GetY(), 100);
+					m_vecLasersEnemy.push_back(m_elaser);
+					Beep(300, 25);
+				}
 			}
 		}
 	}
@@ -275,11 +293,13 @@ bool CLevel::Spawnthebadguys() {
 	enemyspeed = enemyspeed *1.5f;
 	m_vecBricks.clear();
 	m_vecLasers.clear();
+	m_vecLasersEnemy.clear();
 	Beep(300, 25);
 	Beep(500, 25);
 	Beep(700, 25);
 	Beep(1000, 25);
 	Beep(1100, 25);
+	Beep(1500, 50);
 	for (int i = 0; i < kiNumofEnemies; ++i)
 	{
 		CBrick* pBrick = new CBrick();
@@ -318,6 +338,7 @@ CLevel::Process(float _fDeltaTick)
     ProcessCheckForWin();
 	ProcessBallBounds();
 	DrawScore();
+	CheckforDeath();
 
     for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
     {
@@ -357,6 +378,18 @@ CLevel::ProcessBallWallCollision()
 {
 }
 
+void CLevel::CheckforDeath() {
+	if ((m_pPlayer->GetHealth() < 0) || (m_pPlayer->GetHealth() == 0)) {
+		Beep(1500, 50);
+		Beep(1100, 25);
+		Beep(1000, 25);
+		Beep(700, 25);
+		Beep(500, 25);
+		Beep(300, 25);
+		CGame::GetInstance().GameOverLostToLives();
+	}
+}
+
 void CLevel::ProcessLaserCollision() {
 	for (int i = 0; i < m_vecLasers.size(); ++i)
 	{
@@ -392,8 +425,33 @@ void CLevel::ProcessLaserCollision() {
 				}
 			}
 		}
-		}
 	}
+	for (int i = 0; i < m_vecLasersEnemy.size(); ++i)
+	{
+			if ((m_vecLasersEnemy[i] != nullptr)) {
+					float fBallR = m_vecLasersEnemy[i]->GetRadius();
+
+					float fBallX = m_vecLasersEnemy[i]->GetX();
+					float fBallY = m_vecLasersEnemy[i]->GetY();
+
+					float fBrickX = m_pPlayer->GetX();
+					float fBrickY = m_pPlayer->GetY();
+
+					float fBrickH = m_pPlayer->GetHeight();
+					float fBrickW = m_pPlayer->GetWidth();
+
+					if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
+						(fBallX - fBallR < fBrickX + fBrickW / 2) &&
+						(fBallY + fBallR > fBrickY - fBrickH / 2) &&
+						(fBallY - fBallR < fBrickY + fBrickH / 2))
+					{
+						m_pPlayer->SetHealth((m_pPlayer->GetHealth())-1);
+						Beep(1300, 25);
+						m_vecLasersEnemy.erase(m_vecLasersEnemy.begin() + i);
+					}
+			}
+	}
+}
 
 
 void
@@ -451,6 +509,15 @@ CLevel::DrawScore()
     
     TextOutA(hdc, kiX, kiY, m_strScore.c_str(), static_cast<int>(m_strScore.size()));
 	SetTextColor(hdc, RGB(255, 255, 255));
+
+
+	DisplayHeath();
+	TextOutA(hdc, kiX, kiY-20, m_health.c_str(), static_cast<int>(m_health.size()));
+	SetTextColor(hdc, RGB(255, 255, 255));
+
+	DisplayScore();
+	TextOutA(hdc, kiX, kiY - 40, m_score.c_str(), static_cast<int>(m_score.size()));
+	SetTextColor(hdc, RGB(255, 255, 255));
 }
 
 void 
@@ -459,6 +526,22 @@ CLevel::UpdateScoreText()
     m_strScore = "Wave: ";
 
     m_strScore += ToString(wave);
+}
+
+void CLevel::DisplayHeath() {
+
+	m_health = "Lives: ";
+
+	m_health += ToString(m_pPlayer->GetHealth());
+
+}
+
+void CLevel::DisplayScore() {
+
+	m_score = "Score: ";
+
+	m_score += ToString(score);
+
 }
 
 void 
