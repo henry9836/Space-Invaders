@@ -24,6 +24,7 @@
 // Local Includes
 #include "laser.h"
 #include "spaceship.h"
+#include "sheild.h"
 // Types
 
 // Constants
@@ -31,10 +32,11 @@
 // Prototypes
 class CBall;
 class CPlayer;
-class CPlayer;
+class CSheild;
 class CBrick;
 class CFPSCounter;
 class CBackGround;
+
 
 class CLevel
 {
@@ -89,10 +91,12 @@ protected:
     CPlayer* m_pPlayer;
 	CLaser* m_plaser;
 	CLaser* m_elaser;
+	CShield* m_sheild;
 	CSpaceShip* m_space_Ship;
     std::vector<CBrick*> m_vecBricks;
 	std::vector<CLaser*> m_vecLasers;
 	std::vector<CLaser*> m_vecLasersEnemy;
+	std::vector<CShield*> m_sheilds;
 	CFPSCounter* m_fpsCounter;
 
     int m_iWidth;

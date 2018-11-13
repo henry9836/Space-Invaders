@@ -67,7 +67,7 @@ CGame::Initialise(HINSTANCE _hInstance, HWND _hWnd, int _iWidth, int _iHeight)
 	m_pLevel = new CLevel();
 	VALIDATE(m_pLevel->Initialise(_iWidth, _iHeight));
 
-	ShowCursor(true);
+	ShowCursor(false);
 
 	return (true);
 }

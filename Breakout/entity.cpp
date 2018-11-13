@@ -125,6 +125,7 @@ CEntity::SetX(float _f)
 {
 	try {
 		m_fX = _f;
+		m_pSprite->SetX(_f);
 	}
 	catch (...) {
 		OutputDebugString(L"entity.cpp exception in SetX() caught and handled :D");
@@ -136,6 +137,7 @@ CEntity::SetY(float _f)
 {
 	try {
 		m_fY = _f;
+		m_pSprite->SetY(_f);
 	}
 	catch (...) {
 		OutputDebugString(L"entity.cpp exception in SetY() caught and handled :D");

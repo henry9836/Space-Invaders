@@ -57,6 +57,9 @@
     <ClCompile Include="spaceship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sheild.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backbuffer.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="spaceship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sheild.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -163,6 +169,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Sprites\PlayerSpritem.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheild.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheildm.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

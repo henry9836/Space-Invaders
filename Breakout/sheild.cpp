@@ -1,4 +1,3 @@
-
 //
 // Bachelor of Software Engineering
 // Media Design School
@@ -18,9 +17,9 @@
 // Local Includes
 #include "resource.h"
 #include "utils.h"
-#include "spaceship.h"
 
 // This Include
+#include "sheild.h"
 
 // Static Variables
 
@@ -28,28 +27,29 @@
 
 // Implementation
 
-CSpaceShip::CSpaceShip()
+int health = 10;
+
+CShield::CShield()
 	: m_bHit(false)
 {
 
 }
 
-CSpaceShip::~CSpaceShip()
+CShield::~CShield()
 {
 
 }
 
 bool
-CSpaceShip::Initialise(float m_x)
+CShield::Initialise()
 {
-	VALIDATE(CEntity::Initialise(IDB_BITMAP9, IDB_BITMAP10));
-	m_fX = m_x;
-	m_fY = 15;
+	VALIDATE(CEntity::Initialise(IDB_BITMAP11, IDB_BITMAP12));
+
 	return (true);
 }
 
 void
-CSpaceShip::Draw()
+CShield::Draw()
 {
 	if (!m_bHit)
 	{
@@ -58,13 +58,8 @@ CSpaceShip::Draw()
 }
 
 void
-CSpaceShip::Process(float _fDeltaTick)
+CShield::Process(float _fDeltaTick)
 {
-
-	if (m_fX < 600) {
-		m_fX += 0.3f;
-	}
-
 	if (!m_bHit)
 	{
 		CEntity::Process(_fDeltaTick);
@@ -72,20 +67,43 @@ CSpaceShip::Process(float _fDeltaTick)
 }
 
 void
-CSpaceShip::SetHit(bool _b)
+CShield::SetHit(bool _b)
 {
 	m_bHit = _b;
 }
 
 bool
-CSpaceShip::IsHit() const
+CShield::IsHit() const
 {
 	return (m_bHit);
 }
 
-void CSpaceShip::SpawnMe(int m_x) {
-	m_fX = (0.0f - m_x);
-	m_fY = 15;
-	m_bHit = false;
+void CShield::setHealth(int _health)
+{
+	health = _health;
 }
 
+int CShield::getHealth()
+{
+	return health;
+}
+
+void
+CShield::S_X(float _f)
+{
+	try {
+		m_fX = _f;
+	}
+	catch (...) {
+	}
+}
+
+void
+CShield::S_Y(float _f)
+{
+	try {
+		m_fY = _f;
+	}
+	catch (...) {
+	}
+}

@@ -180,6 +180,22 @@ CLevel::Initialise(int _iWidth, int _iHeight)
         m_vecBricks.push_back(pBrick);
     }
 
+	int numofSheilds = 4;
+	iCurrentX = 50;
+	int kiGap = 50;
+	for (int i = 0; i < numofSheilds; i++)
+	{
+		CShield* m_sheild = new CShield();
+		VALIDATE(m_sheild->Initialise());
+
+		m_sheild->SetX(iCurrentX);
+		m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
+
+		m_sheilds.push_back(m_sheild);
+
+		iCurrentX += (static_cast<int>(m_sheild->GetWidth()) + kiGap);
+	}
+
     SetBricksRemaining(kiNumofEnemies);
 	m_fpsCounter = new CFPSCounter();
 	VALIDATE(m_fpsCounter->Initialise());
@@ -203,11 +219,17 @@ CLevel::Draw()
 			m_vecLasers.at(i)->Draw();
 		}
 	}
-
 	for (unsigned int i = 0; i < m_vecLasersEnemy.size(); ++i)
 	{
 		if (m_vecLasersEnemy.at(i) != nullptr) {
 			m_vecLasersEnemy.at(i)->Draw();
+		}
+	}
+
+	for (unsigned int i = 0; i < m_sheilds.size(); ++i)
+	{
+		if (m_sheilds.at(i) != nullptr) {
+			m_sheilds.at(i)->Draw();
 		}
 	}
 
@@ -517,6 +539,92 @@ void CLevel::ProcessLaserCollision() {
 						}
 					}
 					catch (...){
+						OutputDebugString(L"level.cpp exception in ProcessLaserCollision() caught and handled :D");
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < m_vecLasers.size(); ++i)
+	{
+		for (int j = 0; j < m_sheilds.size(); ++j)
+		{
+			if ((m_vecLasers.at(i) != nullptr) && (m_sheilds.at(j) != nullptr)) {
+				if (m_sheilds.at(j)->IsHit())
+				{
+
+				}
+				else {
+					try {
+						float fBallR = m_vecLasers.at(i)->GetRadius();
+
+						float fBallX = m_vecLasers.at(i)->GetX();
+						float fBallY = m_vecLasers.at(i)->GetY();
+
+						float fBrickX = m_sheilds.at(j)->GetX();
+						float fBrickY = m_sheilds.at(j)->GetY();
+
+						float fBrickH = m_sheilds.at(j)->GetHeight();
+						float fBrickW = m_sheilds.at(j)->GetWidth();
+
+						if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
+							(fBallX - fBallR < fBrickX + fBrickW / 2) &&
+							(fBallY + fBallR > fBrickY - fBrickH / 2) &&
+							(fBallY - fBallR < fBrickY + fBrickH / 2))
+						{
+							m_sheilds.at(j)->setHealth((m_sheilds.at(j)->getHealth()) - 1);
+							score += 50;
+							Beep(450, 25);
+							if (m_sheilds.at(j)->getHealth() <= 0) {
+								m_sheilds.at(j)->SetHit(true);
+							}
+							m_vecLasers.erase(m_vecLasers.begin() + i);
+						}
+					}
+					catch (...) {
+						OutputDebugString(L"level.cpp exception in ProcessLaserCollision() caught and handled :D");
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < m_vecLasersEnemy.size(); ++i)
+	{
+		for (int j = 0; j < m_sheilds.size(); ++j)
+		{
+			if ((m_vecLasersEnemy.at(i) != nullptr) && (m_sheilds.at(j) != nullptr)) {
+				if (m_sheilds.at(j)->IsHit())
+				{
+
+				}
+				else {
+					try {
+						float fBallR = m_vecLasersEnemy.at(i)->GetRadius();
+
+						float fBallX = m_vecLasersEnemy.at(i)->GetX();
+						float fBallY = m_vecLasersEnemy.at(i)->GetY();
+
+						float fBrickX = m_sheilds.at(j)->GetX();
+						float fBrickY = m_sheilds.at(j)->GetY();
+
+						float fBrickH = m_sheilds.at(j)->GetHeight();
+						float fBrickW = m_sheilds.at(j)->GetWidth();
+
+						if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
+							(fBallX - fBallR < fBrickX + fBrickW / 2) &&
+							(fBallY + fBallR > fBrickY - fBrickH / 2) &&
+							(fBallY - fBallR < fBrickY + fBrickH / 2))
+						{
+							m_sheilds.at(j)->setHealth((m_sheilds.at(j)->getHealth()) - 1);
+							score += 50;
+							Beep(450, 25);
+							if (m_sheilds.at(j)->getHealth() <= 0) {
+								m_sheilds.at(j)->SetHit(true);
+							}
+							m_vecLasersEnemy.erase(m_vecLasersEnemy.begin() + i);
+						}
+					}
+					catch (...) {
 						OutputDebugString(L"level.cpp exception in ProcessLaserCollision() caught and handled :D");
 					}
 				}

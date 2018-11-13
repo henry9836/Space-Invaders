@@ -38,6 +38,7 @@ WindowProc(HWND _hWnd, UINT _uiMsg, WPARAM _wParam, LPARAM _lParam)
 {
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 	{
+		ShowCursor(true);
 		ShowWindow(g_hDlgDebug, SW_SHOWNORMAL);
 	}
 
@@ -176,7 +177,7 @@ WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _i
 	ZeroMemory(&msg, sizeof(MSG));
 
 
-	HWND hwnd = CreateAndRegisterWindow(_hInstance, kiWidth, kiHeight, L"Breakout");
+	HWND hwnd = CreateAndRegisterWindow(_hInstance, kiWidth, kiHeight, L"Space Invaders");
 
 	CGame& rGame = CGame::GetInstance();
 	

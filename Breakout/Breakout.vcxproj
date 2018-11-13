@@ -151,6 +151,7 @@
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="sheild.cpp" />
     <ClCompile Include="spaceship.cpp" />
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
@@ -167,6 +168,7 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="sheild.h" />
     <ClInclude Include="spaceship.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="utils.h" />
@@ -192,6 +194,8 @@
     <Image Include="Sprites\PlayerSprite.bmp" />
     <Image Include="Sprites\PlayerSpritem.bmp" />
     <Image Include="Sprites\player_mask.bmp" />
+    <Image Include="Sprites\sheild.bmp" />
+    <Image Include="Sprites\sheildm.bmp" />
     <Image Include="Sprites\spaceship.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
