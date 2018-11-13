@@ -12,7 +12,8 @@ Space - Shoot
 
 ### Debug Mode
 
-Press Esc to go into debug mode there are serveral options in debug mode
+Press Esc to go into debug mode, there are serveral options in debug mode
+
 
 No Cooldown - Disables Weapon Cooldown for the player
 
