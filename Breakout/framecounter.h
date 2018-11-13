@@ -4,13 +4,14 @@
 // Auckland
 // New Zealand
 //
-// (c) 2018 Media Design School
+// (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: framecounter.h
+// Description	: helps display FPS
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
+
 
 #pragma once
 

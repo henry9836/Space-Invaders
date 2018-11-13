@@ -4,13 +4,15 @@
 // Auckland
 // New Zealand
 //
-// (c) 2018 Media Design School
+// (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: level.h
+// Description	: the game level info and class stored here
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
+
+
 
 #pragma once
 

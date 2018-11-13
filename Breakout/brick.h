@@ -4,13 +4,14 @@
 // Auckland
 // New Zealand
 //
-// (c) 2018 Media Design School
+// (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: brick.h
+// Description	: holds info for the brick object
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
+
 
 #pragma once
 

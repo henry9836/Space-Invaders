@@ -6,10 +6,10 @@
 //
 // (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: entity.cpp
+// Description	: controls entities
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
 
 // Library Includes
@@ -125,7 +125,7 @@ CEntity::SetX(float _f)
 {
 	try {
 		m_fX = _f;
-		m_pSprite->SetX(_f);
+		m_pSprite->SetX(static_cast<int>(_f));
 	}
 	catch (...) {
 		OutputDebugString(L"entity.cpp exception in SetX() caught and handled :D");
@@ -137,7 +137,7 @@ CEntity::SetY(float _f)
 {
 	try {
 		m_fY = _f;
-		m_pSprite->SetY(_f);
+		m_pSprite->SetY(static_cast<int>(_f));
 	}
 	catch (...) {
 		OutputDebugString(L"entity.cpp exception in SetY() caught and handled :D");

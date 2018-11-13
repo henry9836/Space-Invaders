@@ -6,11 +6,12 @@
 //
 // (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: ball.cpp
+// Description	: does ball things
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
+
 
 // Library Includes
 
@@ -26,6 +27,9 @@
 // Static Function Prototypes
 
 // Implementation
+
+/* FUTURE FEATURE TO ADD BREAKER BUILT IN GAMEMODE  */
+
 
 CBall::CBall()
 : m_fVelocityX(0.0f)

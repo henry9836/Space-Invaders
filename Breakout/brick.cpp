@@ -6,10 +6,10 @@
 //
 // (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: brick.cpp
+// Description	: controls the aliens
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
 
 // Library Includes

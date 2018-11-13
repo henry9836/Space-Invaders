@@ -6,10 +6,10 @@
 //
 // (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: level.cpp
+// Description	: controls the main game
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
 
 // Library Includes
@@ -193,7 +193,7 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 		case 0:
 		{
 			VALIDATE(m_sheild->Initialise(0));
-			m_sheild->SetX(iCurrentX);
+			m_sheild->SetX(static_cast<float>(iCurrentX));
 			m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
 			iCurrentX += (static_cast<int>(m_sheild->GetWidth()) + kiGap);
 			break;
@@ -201,7 +201,7 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 		case 1:
 		{
 			VALIDATE(m_sheild->Initialise(1));
-			m_sheild->SetX(iCurrentX + 16);
+			m_sheild->SetX((static_cast<float>(iCurrentX)) + 16);
 			m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
 			OutputDebugString(L"middle");
 			break;
@@ -209,7 +209,7 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 		case 2:
 		{
 			VALIDATE(m_sheild->Initialise(2));
-			m_sheild->SetX(iCurrentX + 32);
+			m_sheild->SetX((static_cast<float>(iCurrentX)) + 32);
 			m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
 			break;
 		}

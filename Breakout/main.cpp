@@ -6,10 +6,10 @@
 //
 // (c) 2018 Media Design School.
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: main.cpp
+// Description	: init and startup
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
 //
 
 //Library Includes

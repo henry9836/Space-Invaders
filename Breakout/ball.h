@@ -4,13 +4,19 @@
 // Auckland
 // New Zealand
 //
-// (c) 2018 Media Design School
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// (c) 2018 Media Design School.
 //
+// File Name	: ball.h
+// Description	: it holds info for the ball object
+// Author		: Henry Oliver
+// Mail			: henry.oliver@mediadesign.school.nz
+//
+
 
 #pragma once
 
