@@ -9,7 +9,6 @@
 Space - Shoot
 
 
-
 ### Debug Mode
 
 Press Esc to go into debug mode, there are serveral options in debug mode
@@ -27,3 +26,8 @@ LaserSpeed- - Decreases laser travel speed
 
 Shoot - All alive aliens shoot
 
+### Requirements
+
+- Windows 10
+- 512MB RAM
+- 10MB of free storage
