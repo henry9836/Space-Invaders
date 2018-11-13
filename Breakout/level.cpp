@@ -44,17 +44,21 @@
 
 using namespace std;
 
-float laserspeed = 10;
 bool goLeft = false;
 const int kiGap = 5;
 float enemyspeed = 0.2f;
 float score = 0;
 int wave = 1;
-float cooldownmax= 85;
+float cooldownmax= 65;
 float timer;
+float laserspeed = 100;
 bool timeractive;
 const float fBallVelX = 200.0f;
 const float fBallVelY = 75.0f;
+bool godmode = false;
+bool cooldownon = true;
+bool DebugNextLvl = false;
+bool DebugShoot_b = false;
 
 CLevel::CLevel()
 : m_iBricksRemaining(0)
@@ -70,12 +74,33 @@ CLevel::~CLevel()
 {
     while (m_vecBricks.size() > 0)
     {
-        CBrick* pBrick = m_vecBricks[m_vecBricks.size() - 1];
+        CBrick* pBrick = m_vecBricks.at(m_vecBricks.size() - 1);
 
         m_vecBricks.pop_back();
 
         delete pBrick;
     }
+
+	while (m_vecLasers.size() > 0)
+	{
+		CLaser* m_vecLaser = m_vecLasers.at(m_vecLasers.size() - 1);
+
+		m_vecLasers.pop_back();
+
+		delete m_vecLaser;
+	}
+
+	while (m_vecLasersEnemy.size() > 0)
+	{
+		CLaser* m_elaser = m_vecLasersEnemy.at(m_vecLasersEnemy.size() - 1);
+
+		m_vecLasersEnemy.pop_back();
+
+		delete m_elaser;
+	}
+
+	delete m_space_Ship;
+	m_space_Ship = 0;
 
     delete m_pPlayer;
     m_pPlayer = 0;
@@ -86,6 +111,19 @@ CLevel::~CLevel()
 	delete m_pBackground;
 	m_pBackground = 0;
 
+}
+
+bool CLevel::DebugShoot() {
+
+	for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
+	{
+		if (!(m_vecBricks.at(i)->IsHit())) {
+				m_elaser = new CLaser();
+				m_elaser->Initialise(m_vecBricks.at(i)->GetX(), m_vecBricks.at(i)->GetY(), laserspeed);
+				m_vecLasersEnemy.push_back(m_elaser);
+		}
+	}
+	return false;
 }
 
 bool
@@ -155,21 +193,21 @@ CLevel::Draw()
 	m_pBackground->Draw();
 	for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
     {
-		if (m_vecBricks[i] != nullptr) {
-			m_vecBricks[i]->Draw();
+		if (m_vecBricks.at(i) != nullptr) {
+			m_vecBricks.at(i)->Draw();
 		}
     }
 	for (unsigned int i = 0; i < m_vecLasers.size(); ++i)
 	{
-		if (m_vecLasers[i] != nullptr) {
-			m_vecLasers[i]->Draw();
+		if (m_vecLasers.at(i) != nullptr) {
+			m_vecLasers.at(i)->Draw();
 		}
 	}
 
 	for (unsigned int i = 0; i < m_vecLasersEnemy.size(); ++i)
 	{
-		if (m_vecLasersEnemy[i] != nullptr) {
-			m_vecLasersEnemy[i]->Draw();
+		if (m_vecLasersEnemy.at(i) != nullptr) {
+			m_vecLasersEnemy.at(i)->Draw();
 		}
 	}
 
@@ -186,41 +224,41 @@ void CLevel::AleinMove() {
 	{
 		int doIWantToShoot = 0;
 		doIWantToShoot = rand() % 100000 + 1;
-		if (m_vecBricks[i] != nullptr) {
+		if (m_vecBricks.at(i) != nullptr) {
 			if (goLeft) {
-				if (m_vecBricks[i]->GetX() > kiGap) {
-					m_vecBricks[i]->SetX(m_vecBricks[i]->GetX() - enemyspeed);
+				if (m_vecBricks.at(i)->GetX() > kiGap) {
+					m_vecBricks.at(i)->SetX(m_vecBricks.at(i)->GetX() - enemyspeed);
 				}
 				else {
-					if (m_vecBricks[i]->IsHit()) {
+					if (m_vecBricks.at(i)->IsHit()) {
 
 					}
 					else {
 						goLeft = !goLeft;
 						for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
 						{
-							m_vecBricks[i]->SetY(m_vecBricks[i]->GetY() + 10);
+							m_vecBricks.at(i)->SetY(m_vecBricks.at(i)->GetY() + 10);
 						}
 					}
 				}
 			}
 
 			else {
-				if (m_vecBricks[i]->GetX() < m_iWidth - kiGap) {
-					m_vecBricks[i]->SetX(m_vecBricks[i]->GetX() + enemyspeed);
+				if (m_vecBricks.at(i)->GetX() < m_iWidth - kiGap) {
+					m_vecBricks.at(i)->SetX(m_vecBricks.at(i)->GetX() + enemyspeed);
 				}
 				else {
 					goLeft = !goLeft;
 					for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
 					{
-						m_vecBricks[i]->SetY(m_vecBricks[i]->GetY() + 10);
+						m_vecBricks.at(i)->SetY(m_vecBricks.at(i)->GetY() + 10);
 					}
 				}
 			}
 
-			if ((m_vecBricks[i]->GetY()) > 530) { //when aliens go below player
-				if (m_vecBricks[i] != nullptr) {
-					if (m_vecBricks[i]->IsHit()) {
+			if ((m_vecBricks.at(i)->GetY()) > 530) { //when aliens go below player
+				if (m_vecBricks.at(i) != nullptr) {
+					if (m_vecBricks.at(i)->IsHit()) {
 
 					}
 					else {
@@ -235,10 +273,10 @@ void CLevel::AleinMove() {
 				}
 
 			}
-			if (!(m_vecBricks[i]->IsHit())) {
+			if (!(m_vecBricks.at(i)->IsHit())) {
 				if ((doIWantToShoot < 10005) && (doIWantToShoot > 10000)) {
 					m_elaser = new CLaser();
-					m_elaser->Initialise(m_vecBricks[i]->GetX(), m_vecBricks[i]->GetY(), 100);
+					m_elaser->Initialise(m_vecBricks.at(i)->GetX(), m_vecBricks.at(i)->GetY(), laserspeed);
 					m_vecLasersEnemy.push_back(m_elaser);
 					Beep(300, 25);
 				}
@@ -248,33 +286,43 @@ void CLevel::AleinMove() {
 }
 
 void CLevel::LaserMoon(float _fDeltaTick) {
-	for (unsigned int i = 0; i < m_vecLasers.size(); ++i)
-	{
-		if (m_vecLasers[i] != nullptr) {
-			if (((m_vecLasers[i]->GetY()) < 30) || ((m_vecLasers[i]->GetY()) > 850)) {
-				m_vecLasers.erase(m_vecLasers.begin() + i);
-				break;
+	try {
+		for (unsigned int i = 0; i < m_vecLasers.size(); ++i)
+		{
+			if (m_vecLasers.at(i) != nullptr) {
+				if (((m_vecLasers.at(i)->GetY()) < 30) || ((m_vecLasers.at(i)->GetY()) > 850)) {
+					m_vecLasers.erase(m_vecLasers.begin() + i);
+					break;
+				}
+				else {
+					m_vecLasers.at(i)->Draw();
+					m_vecLasers.at(i)->Process(_fDeltaTick, m_vecLasers.at(i));
+				}
 			}
-			else {
-				m_vecLasers[i]->Draw();
-				m_vecLasers[i]->Process(_fDeltaTick, m_vecLasers[i]);
-			}
-		}
-		
-	}
-	for (unsigned int i = 0; i < m_vecLasersEnemy.size(); ++i)
-	{
-		if (m_vecLasersEnemy[i] != nullptr) {
-			if (((m_vecLasersEnemy[i]->GetY()) < 30) || ((m_vecLasersEnemy[i]->GetY()) > 850)) {
-				m_vecLasersEnemy.erase(m_vecLasersEnemy.begin() + i);
-				break;
-			}
-			else {
-				m_vecLasersEnemy[i]->Draw();
-				m_vecLasersEnemy[i]->Process(_fDeltaTick, m_vecLasersEnemy[i]);
-			}
-		}
 
+		}
+	}
+	catch (...) {
+		OutputDebugString(L"level.cpp exception caught in Laser Moon ERROR:1");
+	}
+	try {
+		for (unsigned int i = 0; i < m_vecLasersEnemy.size(); ++i)
+		{
+			if (m_vecLasersEnemy.at(i) != nullptr) {
+				if (((m_vecLasersEnemy.at(i)->GetY()) < 30) || ((m_vecLasersEnemy.at(i)->GetY()) > 850)) {
+					m_vecLasersEnemy.erase(m_vecLasersEnemy.begin() + i);
+					break;
+				}
+				else {
+					m_vecLasersEnemy.at(i)->Draw();
+					m_vecLasersEnemy.at(i)->Process(_fDeltaTick, m_vecLasersEnemy.at(i));
+				}
+			}
+
+		}
+	}
+	catch (...) {
+		OutputDebugString(L"level.cpp exception caught in Laser Moon ERROR:2");
 	}
 
 }
@@ -306,7 +354,7 @@ bool CLevel::Spawnthebadguys() {
 		if (spawnAlien > 75) {
 			int i;
 			i = rand() % 10000 + 1;
-			m_space_Ship->SpawnMe(-i);
+			m_space_Ship->SpawnMe(i);
 			Beep(1500, 150);
 			Beep(1750, 150);
 			Beep(1950, 150);
@@ -364,10 +412,10 @@ CLevel::Process(float _fDeltaTick)
 
 		for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
 		{
-			m_vecBricks[i]->Process(_fDeltaTick);
+			m_vecBricks.at(i)->Process(_fDeltaTick);
 		}
 
-		if (timeractive) {
+		if ((timeractive) && (cooldownon)) {
 			if (timer < 0) {
 				timeractive = false;
 			}
@@ -377,15 +425,9 @@ CLevel::Process(float _fDeltaTick)
 				if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 				{
 					m_plaser = new CLaser();
-					m_plaser->Initialise(m_pPlayer->GetX(), m_pPlayer->GetY(), -100);
+					m_plaser->Initialise(m_pPlayer->GetX(), m_pPlayer->GetY(), -laserspeed);
 					m_vecLasers.push_back(m_plaser);
 					Beep(500, 25);
-				}
-				if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) //DEBUG SKIP
-				{
-					wave++;
-					Spawnthebadguys();
-					Beep(1500, 25);
 				}
 				timer = cooldownmax;
 				timeractive = true;
@@ -398,6 +440,17 @@ CLevel::Process(float _fDeltaTick)
 		timer -= 1;
 
 		m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
+
+		if (DebugNextLvl) {
+			Spawnthebadguys();
+			DebugNextLvl = false;
+			wave++;
+		}
+
+		if (DebugShoot_b) {
+			DebugShoot();
+			DebugShoot_b = false;
+		}
 	}
 	catch (...) {
 		OutputDebugString(L"level.cpp exception in Process() caught and handled :D");
@@ -417,13 +470,15 @@ CLevel::ProcessBallWallCollision()
 
 void CLevel::CheckforDeath() {
 	if ((m_pPlayer->GetHealth() < 0) || (m_pPlayer->GetHealth() == 0)) {
-		Beep(1500, 50);
-		Beep(1100, 25);
-		Beep(1000, 25);
-		Beep(700, 25);
-		Beep(500, 25);
-		Beep(300, 25);
-		CGame::GetInstance().GameOverLostToLives();
+		if (!godmode) {
+			Beep(1500, 50);
+			Beep(1100, 25);
+			Beep(1000, 25);
+			Beep(700, 25);
+			Beep(500, 25);
+			Beep(300, 25);
+			CGame::GetInstance().GameOverLostToLives();
+		}
 	}
 }
 
@@ -432,30 +487,30 @@ void CLevel::ProcessLaserCollision() {
 	{
 		for (int j = 0; j < m_vecBricks.size(); ++j)
 		{
-			if ((m_vecLasers[i] != nullptr) && (m_vecBricks[j] != nullptr)) {
-				if (m_vecBricks[j]->IsHit())
+			if ((m_vecLasers.at(i) != nullptr) && (m_vecBricks.at(j) != nullptr)) {
+				if (m_vecBricks.at(j)->IsHit())
 				{
 
 				}
 				else {
 					try {
-						float fBallR = m_vecLasers[i]->GetRadius();
+						float fBallR = m_vecLasers.at(i)->GetRadius();
 
-						float fBallX = m_vecLasers[i]->GetX();
-						float fBallY = m_vecLasers[i]->GetY();
+						float fBallX = m_vecLasers.at(i)->GetX();
+						float fBallY = m_vecLasers.at(i)->GetY();
 
-						float fBrickX = m_vecBricks[j]->GetX();
-						float fBrickY = m_vecBricks[j]->GetY();
+						float fBrickX = m_vecBricks.at(j)->GetX();
+						float fBrickY = m_vecBricks.at(j)->GetY();
 
-						float fBrickH = m_vecBricks[j]->GetHeight();
-						float fBrickW = m_vecBricks[j]->GetWidth();
+						float fBrickH = m_vecBricks.at(j)->GetHeight();
+						float fBrickW = m_vecBricks.at(j)->GetWidth();
 
 						if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
 							(fBallX - fBallR < fBrickX + fBrickW / 2) &&
 							(fBallY + fBallR > fBrickY - fBrickH / 2) &&
 							(fBallY - fBallR < fBrickY + fBrickH / 2))
 						{
-							m_vecBricks[j]->SetHit(true);
+							m_vecBricks.at(j)->SetHit(true);
 							score += 50;
 							Beep(1000, 25);
 							m_vecLasers.erase(m_vecLasers.begin() + i);
@@ -470,11 +525,12 @@ void CLevel::ProcessLaserCollision() {
 	}
 	for (int i = 0; i < m_vecLasersEnemy.size(); ++i)
 	{
-			if ((m_vecLasersEnemy[i] != nullptr)) {
-					float fBallR = m_vecLasersEnemy[i]->GetRadius();
+			if ((m_vecLasersEnemy.at(i) != nullptr)) {
+				try {
+					float fBallR = m_vecLasersEnemy.at(i)->GetRadius();
 
-					float fBallX = m_vecLasersEnemy[i]->GetX();
-					float fBallY = m_vecLasersEnemy[i]->GetY();
+					float fBallX = m_vecLasersEnemy.at(i)->GetX();
+					float fBallY = m_vecLasersEnemy.at(i)->GetY();
 
 					float fBrickX = m_pPlayer->GetX();
 					float fBrickY = m_pPlayer->GetY();
@@ -487,14 +543,50 @@ void CLevel::ProcessLaserCollision() {
 						(fBallY + fBallR > fBrickY - fBrickH / 2) &&
 						(fBallY - fBallR < fBrickY + fBrickH / 2))
 					{
-						m_pPlayer->SetHealth((m_pPlayer->GetHealth())-1);
+						m_pPlayer->SetHealth((m_pPlayer->GetHealth()) - 1);
 						Beep(1300, 25);
 						m_vecLasersEnemy.erase(m_vecLasersEnemy.begin() + i);
 					}
+				}
+				catch (...) {
+					OutputDebugString(L"level.cpp exception in ProcessLaserCollision() caught and handled :D");
+				}
 			}
 	}
-}
+	for (int i = 0; i < m_vecLasers.size(); ++i)
+	{
+		if ((m_vecLasers.at(i) != nullptr)) {
+			try {
+				float fBallR = m_vecLasers.at(i)->GetRadius();
 
+				float fBallX = m_vecLasers.at(i)->GetX();
+				float fBallY = m_vecLasers.at(i)->GetY();
+
+				float fBrickX = m_space_Ship->GetX();
+				float fBrickY = m_space_Ship->GetY();
+
+				float fBrickH = m_space_Ship->GetHeight();
+				float fBrickW = m_space_Ship->GetWidth();
+
+				if ((fBallX + fBallR > fBrickX - fBrickW / 2) &&
+					(fBallX - fBallR < fBrickX + fBrickW / 2) &&
+					(fBallY + fBallR > fBrickY - fBrickH / 2) &&
+					(fBallY - fBallR < fBrickY + fBrickH / 2))
+				{
+					m_space_Ship->SetHit(true);
+					Beep(1300, 25);
+					Beep(1500, 25);
+					Beep(1700, 25);
+					score += 1500;
+					m_vecLasers.erase(m_vecLasers.begin() + i);
+				}
+			}
+			catch (...) {
+				OutputDebugString(L"level.cpp exception in ProcessLaserCollision() caught and handled :D");
+			}
+		}
+	}
+}
 
 void
 CLevel::ProcessBallPlayerCollision()
@@ -511,8 +603,8 @@ CLevel::ProcessCheckForWin()
 {
     for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
     {
-		if (m_vecBricks[i] != nullptr) {
-			if (!m_vecBricks[i]->IsHit())
+		if (m_vecBricks.at(i) != nullptr) {
+			if (!m_vecBricks.at(i)->IsHit())
 			{
 				return;
 			}
@@ -543,25 +635,31 @@ CLevel::SetBricksRemaining(int _i)
 void
 CLevel::DrawScore()
 {
-    HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
+	try {
+		HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
 
-    const int kiX = 0;
-    const int kiY = m_iHeight - 14;
-	SetBkMode(hdc, TRANSPARENT);
-    
-    TextOutA(hdc, kiX, kiY, m_strScore.c_str(), static_cast<int>(m_strScore.size()));
-	SetTextColor(hdc, RGB(255, 255, 255));
+		const int kiX = 0;
+		const int kiY = m_iHeight - 14;
+		SetBkMode(hdc, TRANSPARENT);
 
+		TextOutA(hdc, kiX, kiY, m_strScore.c_str(), static_cast<int>(m_strScore.size()));
+		SetTextColor(hdc, RGB(255, 255, 255));
 
-	DisplayHeath();
-	TextOutA(hdc, kiX, kiY-20, m_health.c_str(), static_cast<int>(m_health.size()));
-	SetTextColor(hdc, RGB(255, 255, 255));
+		// vector.at(3]
+		// vector.at(3)
 
-	DisplayScore();
-	TextOutA(hdc, kiX, kiY - 40, m_score.c_str(), static_cast<int>(m_score.size()));
-	SetTextColor(hdc, RGB(255, 255, 255));
+		DisplayHeath();
+		TextOutA(hdc, kiX, kiY - 20, m_health.c_str(), static_cast<int>(m_health.size()));
+		SetTextColor(hdc, RGB(255, 255, 255));
+
+		DisplayScore();
+		TextOutA(hdc, kiX, kiY - 40, m_score.c_str(), static_cast<int>(m_score.size()));
+		SetTextColor(hdc, RGB(255, 255, 255));
+	}
+	catch (...) {
+		OutputDebugString(L"level.cpp exception in DrawScore() caught and handled :D");
+	}
 }
-
 void 
 CLevel::UpdateScoreText()
 {
@@ -593,4 +691,96 @@ CLevel::DrawFPS()
 
 	m_fpsCounter->DrawFPSText(hdc, m_iWidth, m_iHeight);
 
+}
+
+void GodMode()
+{
+	try {
+		godmode = !godmode;
+		OutputDebugString(L"GODMODE");
+	}
+	catch (...) {
+
+	}
+}
+
+void nocooldown(){
+	try
+	{
+		cooldownon = !cooldownon;
+		OutputDebugString(L"laser galoor");
+	}
+	catch(...){
+	}
+}
+
+void nextwave()
+{
+	try
+	{
+		DebugNextLvl = true;
+		OutputDebugString(L"going up?");
+	}
+	catch (...) {
+	}
+}
+
+void spawnUFO()
+{
+}
+
+void laserspeedadd()
+{
+	try {
+		laserspeed += 10;
+		OutputDebugString(L"moar lase speed");
+	}
+	catch (...) {
+
+	}
+}
+
+void laserspeeddown()
+{
+	try {
+		laserspeed -= 10;
+		OutputDebugString(L"less laser speed");
+	}
+	catch (...) {
+
+	}
+}
+
+void aleinspeedup()
+{
+	try {
+		enemyspeed += 0.5;
+		OutputDebugString(L"moar enemy speed");
+	}
+	catch (...) {
+
+	}
+}
+
+void aleinspeeddown()
+{
+	try {
+		enemyspeed -= 0.5;
+		OutputDebugString(L"less enemy speed");
+	}
+	catch (...) {
+
+	}
+}
+
+void everybodyshoot()
+{
+	try {
+		DebugShoot_b = true;
+		OutputDebugString(L"FIRE!");
+	}
+	catch (...) {
+
+	}
+	
 }

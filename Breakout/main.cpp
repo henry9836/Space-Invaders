@@ -22,16 +22,25 @@
 #include "utils.h"
 #include "level.h"
 #include "player.h"
+#include "resource.h"
 
 const int kiWidth = 400;
 const int kiHeight = 600;
 
+HWND g_hDlgDebug;
 
 #define WINDOW_CLASS_NAME L"BSENGGFRAMEWORK"
+
+
 
 LRESULT CALLBACK
 WindowProc(HWND _hWnd, UINT _uiMsg, WPARAM _wParam, LPARAM _lParam)
 {
+	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+	{
+		ShowWindow(g_hDlgDebug, SW_SHOWNORMAL);
+	}
+
 	switch (_uiMsg)
 	{
 	case WM_MOUSEMOVE:
@@ -100,6 +109,65 @@ CreateAndRegisterWindow(HINSTANCE _hInstance, int _iWidth, int _iHeight, const w
 	return (hwnd);
 }
 
+BOOL CALLBACK DebugDlgProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam)
+{
+	switch (_msg)
+	{
+	case WM_COMMAND: {
+		switch (LOWORD(_wparam))
+		{
+		case IDC_BUTTON1: { //nocooldown
+			nocooldown();
+			break;
+		}
+		case IDC_BUTTON2: { //godmode
+			GodMode();
+			break;
+		}
+		case IDC_BUTTON3: { //next wave
+			nextwave();
+			break;
+		}
+		case IDC_BUTTON4: { //spawn UFO
+			spawnUFO();
+			break;
+		}
+		case IDC_BUTTON8: { //laserspeed+
+			laserspeedadd();
+			break;
+		}
+		case IDC_BUTTON9: { //laserspeed-
+			laserspeeddown();
+			break;
+		}
+		case IDC_BUTTON5: { //alien speed+
+			aleinspeedup();
+			break;
+		}
+		case IDC_BUTTON6: { //alien speed-
+			aleinspeeddown();
+			break;
+		}
+		case IDC_BUTTON7: { //all aliens shoot
+			everybodyshoot();
+			break;
+		}
+		case IDOK: {
+			ShowWindow(_hwnd, SW_HIDE);
+			break;
+		}
+		default:
+			break;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
+    return FALSE;
+}
+
 int WINAPI
 WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _iCmdshow)
 {
@@ -113,6 +181,8 @@ WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _i
 	CGame& rGame = CGame::GetInstance();
 	
 	GetClientRect(hwnd, &_rect);
+
+	g_hDlgDebug = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DIALOG1), hwnd, (DLGPROC)DebugDlgProc);
 
 	//if (!rGame.Initialise(_hInstance, hwnd, kiWidth, kiHeight))
 	if (!rGame.Initialise(_hInstance, hwnd, _rect.right, _rect.bottom))

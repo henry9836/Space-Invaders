@@ -75,11 +75,6 @@ CPlayer::Process(float _fDeltaTick)
 		{
 			m_fX -= 400.0f * _fDeltaTick;
 		}
-
-		else if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
-		{
-			//debug
-		}
 		if (m_fX - fHalfPaddleW <= 0)
 		{
 			m_fX = fHalfPaddleW;

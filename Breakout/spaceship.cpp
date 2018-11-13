@@ -62,7 +62,7 @@ CSpaceShip::Process(float _fDeltaTick)
 {
 
 	if (m_fX < 600) {
-		m_fX += 1;
+		m_fX += 0.3f;
 	}
 
 	if (!m_bHit)
@@ -84,8 +84,8 @@ CSpaceShip::IsHit() const
 }
 
 void CSpaceShip::SpawnMe(int m_x) {
-	m_bHit = false;
-	m_fX = m_x;
+	m_fX = (0.0 - m_x);
 	m_fY = 15;
+	m_bHit = false;
 }
 

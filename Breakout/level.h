@@ -43,6 +43,8 @@ public:
     CLevel();
     virtual ~CLevel();
 
+	bool DebugShoot();
+
     virtual bool Initialise(int _iWidth, int _iHeight);
 
     virtual void Draw();
@@ -72,7 +74,6 @@ protected:
 	void DrawFPS();
 	void DisplayHeath();
 	void DisplayScore();
-
     void SetBricksRemaining(int _i);
 
 private:
@@ -106,6 +107,16 @@ protected:
 private:
 
 };
+
+void GodMode();
+void nocooldown();
+void nextwave();
+void spawnUFO();
+void laserspeedadd();
+void laserspeeddown();
+void aleinspeedup();
+void aleinspeeddown();
+void everybodyshoot();
 
 #endif    // __LEVEL_H__
 
