@@ -37,7 +37,7 @@ public:
 	CShield();
 	virtual ~CShield();
 
-	virtual bool Initialise();
+	bool Initialise(int type);
 
 	virtual void Draw();
 	virtual void Process(float _fDeltaTick);

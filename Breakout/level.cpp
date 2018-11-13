@@ -180,20 +180,50 @@ CLevel::Initialise(int _iWidth, int _iHeight)
         m_vecBricks.push_back(pBrick);
     }
 
-	int numofSheilds = 4;
-	iCurrentX = 50;
+	int numofSheilds = 5;
+	iCurrentX = -75;
 	int kiGap = 50;
-	for (int i = 0; i < numofSheilds; i++)
+	int part = 0;
+	for (int i = 0; i < (numofSheilds*3); i++)
 	{
 		CShield* m_sheild = new CShield();
-		VALIDATE(m_sheild->Initialise());
-
-		m_sheild->SetX(iCurrentX);
-		m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
+		
+		switch (part) //assemble parts of shields
+		{
+		case 0:
+		{
+			VALIDATE(m_sheild->Initialise(0));
+			m_sheild->SetX(iCurrentX);
+			m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
+			iCurrentX += (static_cast<int>(m_sheild->GetWidth()) + kiGap);
+			break;
+		}
+		case 1:
+		{
+			VALIDATE(m_sheild->Initialise(1));
+			m_sheild->SetX(iCurrentX + 16);
+			m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
+			OutputDebugString(L"middle");
+			break;
+		}
+		case 2:
+		{
+			VALIDATE(m_sheild->Initialise(2));
+			m_sheild->SetX(iCurrentX + 32);
+			m_sheild->SetY((_iHeight - (1.5f * m_pPlayer->GetHeight())) - 50);
+			break;
+		}
+		default:
+			break;
+		}
 
 		m_sheilds.push_back(m_sheild);
 
-		iCurrentX += (static_cast<int>(m_sheild->GetWidth()) + kiGap);
+		part++;
+
+		if (part > 2) {
+			part = 0;
+		}
 	}
 
     SetBricksRemaining(kiNumofEnemies);
@@ -573,7 +603,6 @@ void CLevel::ProcessLaserCollision() {
 							(fBallY - fBallR < fBrickY + fBrickH / 2))
 						{
 							m_sheilds.at(j)->setHealth((m_sheilds.at(j)->getHealth()) - 1);
-							score += 50;
 							Beep(450, 25);
 							if (m_sheilds.at(j)->getHealth() <= 0) {
 								m_sheilds.at(j)->SetHit(true);
@@ -616,7 +645,6 @@ void CLevel::ProcessLaserCollision() {
 							(fBallY - fBallR < fBrickY + fBrickH / 2))
 						{
 							m_sheilds.at(j)->setHealth((m_sheilds.at(j)->getHealth()) - 1);
-							score += 50;
 							Beep(450, 25);
 							if (m_sheilds.at(j)->getHealth() <= 0) {
 								m_sheilds.at(j)->SetHit(true);

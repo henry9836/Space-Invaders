@@ -177,5 +177,23 @@
     <Image Include="Sprites\sheildm.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\sheild1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheild1m.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheild2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheild2m.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheild3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\sheild3m.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

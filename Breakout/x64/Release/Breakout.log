@@ -1,19 +1,4 @@
-﻿  backbuffer.cpp
-  background.cpp
-  ball.cpp
-  brick.cpp
-  clock.cpp
-  entity.cpp
-  framecounter.cpp
-  game.cpp
-  laser.cpp
-  level.cpp
-  main.cpp
-  player.cpp
-  spaceship.cpp
-e:\uni\game projects\space invaders\breakout\spaceship.cpp(88): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  sprite.cpp
-  Generating code
-  All 397 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  Generating code
+  All 462 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  Breakout.vcxproj -> E:\UNI\Game Projects\Space Invaders\x64\Release\Breakout.exe
+  Breakout.vcxproj -> F:\UNI\Game Projects\Space Invaders\x64\Release\Breakout.exe

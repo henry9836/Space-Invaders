@@ -1,5 +1,5 @@
 ﻿  level.cpp
-f:\uni\game projects\space invaders\breakout\level.cpp(191): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  sheild.cpp
-  Generating Code...
+f:\uni\game projects\space invaders\breakout\level.cpp(196): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\uni\game projects\space invaders\breakout\level.cpp(204): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\uni\game projects\space invaders\breakout\level.cpp(212): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Breakout.vcxproj -> F:\UNI\Game Projects\Space Invaders\x64\Debug\Breakout.exe

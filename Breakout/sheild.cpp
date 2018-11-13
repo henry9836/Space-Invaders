@@ -41,9 +41,29 @@ CShield::~CShield()
 }
 
 bool
-CShield::Initialise()
+CShield::Initialise(int type)
 {
-	VALIDATE(CEntity::Initialise(IDB_BITMAP11, IDB_BITMAP12));
+	switch (type)
+	{
+	case 0: {
+		VALIDATE(CEntity::Initialise(IDB_BITMAP13, IDB_BITMAP14));
+		break;
+	}
+	case 1: {
+		VALIDATE(CEntity::Initialise(IDB_BITMAP15, IDB_BITMAP16));
+		break;
+	}
+	case 2: {
+		VALIDATE(CEntity::Initialise(IDB_BITMAP17, IDB_BITMAP18));
+		break;
+	}
+	default:
+	{
+		VALIDATE(CEntity::Initialise(IDB_BITMAP11, IDB_BITMAP12));
+		break;
+	}
+	}
+	
 
 	return (true);
 }

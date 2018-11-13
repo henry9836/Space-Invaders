@@ -195,6 +195,12 @@
     <Image Include="Sprites\PlayerSpritem.bmp" />
     <Image Include="Sprites\player_mask.bmp" />
     <Image Include="Sprites\sheild.bmp" />
+    <Image Include="Sprites\sheild1.bmp" />
+    <Image Include="Sprites\sheild1m.bmp" />
+    <Image Include="Sprites\sheild2.bmp" />
+    <Image Include="Sprites\sheild2m.bmp" />
+    <Image Include="Sprites\sheild3.bmp" />
+    <Image Include="Sprites\sheild3m.bmp" />
     <Image Include="Sprites\sheildm.bmp" />
     <Image Include="Sprites\spaceship.bmp" />
   </ItemGroup>
