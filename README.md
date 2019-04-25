@@ -1,5 +1,6 @@
 # Space-Invaders
-
+![Example Of Program](https://raw.githubusercontent.com/henry9836/Space-Invaders/master/gif.gif)
+#### Henry Oliver
 ### Controls
 
 ← - Move player to the left
