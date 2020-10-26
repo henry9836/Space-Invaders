@@ -1,4 +1,20 @@
-﻿  Generating code
-  All 462 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  backbuffer.cpp
+  background.cpp
+  ball.cpp
+  brick.cpp
+  clock.cpp
+  entity.cpp
+  framecounter.cpp
+  game.cpp
+  laser.cpp
+  level.cpp
+  main.cpp
+  player.cpp
+  sheild.cpp
+  spaceship.cpp
+  sprite.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 423 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  Breakout.vcxproj -> F:\UNI\Game Projects\Space Invaders\x64\Release\Breakout.exe
+  Breakout.vcxproj -> D:\Unity Projects\Space-Invaders\x64\Release\Breakout.exe

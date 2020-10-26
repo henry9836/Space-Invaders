@@ -1,5 +1,17 @@
-﻿  level.cpp
-f:\uni\game projects\space invaders\breakout\level.cpp(196): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-f:\uni\game projects\space invaders\breakout\level.cpp(204): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-f:\uni\game projects\space invaders\breakout\level.cpp(212): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Breakout.vcxproj -> F:\UNI\Game Projects\Space Invaders\x64\Debug\Breakout.exe
+﻿  backbuffer.cpp
+  background.cpp
+  ball.cpp
+  brick.cpp
+  clock.cpp
+  entity.cpp
+  framecounter.cpp
+  game.cpp
+  laser.cpp
+  level.cpp
+  main.cpp
+  player.cpp
+  sheild.cpp
+  spaceship.cpp
+  sprite.cpp
+  Generating Code...
+  Breakout.vcxproj -> D:\Unity Projects\Space-Invaders\x64\Debug\Breakout.exe
