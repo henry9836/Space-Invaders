@@ -1,5 +1,5 @@
 # Space-Invaders
-![Example Of Program](https://raw.githubusercontent.com/henry9836/Space-Invaders/master/gif.gif)
+![Example Of Program](https://raw.githubusercontent.com/henry9836/Space-Invaders/master/docs/gif.gif)
 #### Henry Oliver
 ### Controls
 
